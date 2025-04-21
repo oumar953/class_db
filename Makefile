@@ -1,21 +1,22 @@
-# Makefile
+#makefile
 
 CC = gcc
 CFLAGS = -Wall -Wextra -std=c99 -g
 SRC = src
-SRCS = $(SRC)/main.c $(SRC)/database.c $(SRC)/btree.c
+DB_SRCS = $(SRC)/database.c $(SRC)/btree.c
+MAIN_SRCS = $(SRC)/main.c $(DB_SRCS)
 TARGET = db
 
 all: $(TARGET)
 
-$(TARGET): $(SRCS)
+$(TARGET): $(MAIN_SRCS)
 	$(CC) $(CFLAGS) -o $@ $^
 
-test: tests/test_db.c $(SRCS)
-	$(CC) $(CFLAGS) -o test_db tests/test_db.c $(SRCS)
+test: tests/test_db.c $(DB_SRCS)
+	$(CC) $(CFLAGS) -o test_db $^
+	./test_db
 
 clean:
 	rm -f $(TARGET) test_db
 
 .PHONY: all test clean
-
