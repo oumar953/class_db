@@ -16,8 +16,16 @@ typedef struct {
     int row_count;
 } Table;
 
+// Initialise une table vide
 void init_table(Table *table);
-void insert_row(Table *table, int id, const char *name);
-void select_all(const Table *table);
+
+// montre  les erreur
+int insert_row(Table *table, int id, const char *name);
+
+// fonction de la table
+int delete_row(Table *table, int id);
+int save_table(Table *table, const char *filename);
+int load_table(Table *table, const char *filename);
+
 
 #endif
