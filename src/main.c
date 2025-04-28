@@ -86,7 +86,7 @@ void process_command(char* command, Table* table) {
 		if (result == 0) {
 		   printf("Ligne avec id=%d supprimée\n", id);
 		} else {
-		   printf("Aucune ligne trouvée avec id=%d\n");
+		   printf("Aucune ligne trouvée avec id=%d\n", id);
 		}
     } else {
 	printf("Erreur de syntaxe Attendu DELETE id\n");
@@ -114,8 +114,8 @@ void process_command(char* command, Table* table) {
 	Table table;
 	init_table(&table);
 
-	// charger la table depuis le fichier a faire plus tard
-	// Load_table(&table, DATA_FILE);
+	// charge la table
+	load_table(&table, DATA_FILE);
 
 	char command[MAX_COMMAND_LENGTH];
 	printf("Base de données simple. Tapez HELP pour voir les commandes disponible.\n");
@@ -138,8 +138,8 @@ void process_command(char* command, Table* table) {
 	}
      }
 
-	//sauvegarde la table avant de quitter  a faire apès aussi
-	// save_table(&table, DATA_FILE);
+	//sauvegarde la table
+	 save_table(&table, DATA_FILE);
 	return 0;
  }
 
