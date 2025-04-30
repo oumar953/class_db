@@ -28,4 +28,19 @@ int save_table(Table *table, const char *filename);
 int load_table(Table *table, const char *filename);
 
 
-#endif
+// Structure de l'arbre binaire
+ typedef struct TreeNode {
+	int id;
+	char name[MAX_NAME_LENGTH];
+	struct TreeNode* left;
+	struct TreeNode* right;
+} TreeNode;
+
+ // Fonctions pour l'arbre 
+ TreeNode* insert_node(TreeNode* root, int id, const char* name);
+ TreeNode* search_node(TreeNode* root, int id);
+ TreeNode* delete_node(TreeNode* root, int id);
+ void select_all_tree(TreeNode* root);
+ void free_tree(TreeNode* root);
+
+ #endif

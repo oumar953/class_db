@@ -3,7 +3,7 @@
 #include <string.h> //Pour les fonctions de manipulation de chaînes
 #include <errno.h>  // Pour la gestion des erreurs
 #include "database.h"
-
+#include <stdlib.h>  // Pour malloc/free utilisé dans database.h
 void init_table(Table *table) {
     table->row_count = 0;
 }
@@ -137,3 +137,90 @@ void select_all(const Table *table) {
    fclose(file);
    return 0;
   }
+
+
+
+
+
+
+  TreeNode* insert_node(TreeNode* root, int id, const char* name) {
+	if (root == NULL) {
+		TreeNode* new_node = malloc(sizeof(TreeNode));
+		if (new_node == NULL) {
+		   perror("malloc");
+		   exit(EXIT_FAILURE);
+		}
+		new_node->id = id;
+		strncpy(new_node->name, name, MAX_NAME_LENGTH);
+		new_node->left = new_node->right = NULL;
+		return new_node;
+	  }
+
+	  if (id < root->id) {
+	     root->left = insert_node(root->left, id, name);
+	  } else if (id > root->id) {
+	     root->right = insert_node(root->right, id, name);
+	  } else {
+		printf("Erreur: ID déjà existant %d\n", id);
+	  }
+	  return root;
+}
+
+
+ void select_all_tree(TreeNode* root) {
+	if(root != NULL) {
+	   select_all_tree(root->left);
+	   printf("ID: %d, Nom: %s\n", root->id, root->name);
+	   select_all_tree(root->right);
+	}
+}
+
+
+ TreeNode* search_node(TreeNode* root, int id) {
+	if (root == NULL || root->id == id)
+	   return root;
+
+	if (id < root->id)
+	   return search_node(root->left, id);
+	else
+	   return search_node(root->right, id);
+}
+
+
+ TreeNode* delete_node(TreeNode* root, int id) {
+	if (root == NULL) return NULL;
+
+	if (id < root->id) {
+	    root->left = delete_node(root->left, id);
+	} else if (id > root->id) {
+	    root->right = delete_node(root->right, id);
+	} else {
+	    if (root->left == NULL) {
+		TreeNode* right_child = root->right;
+		free(root);
+		return right_child;
+	    }
+	    if (root->right == NULL) {
+		TreeNode* left_child = root->left;
+		free(root);
+		return left_child;
+	    }
+
+	    TreeNode* temp = root->right;
+	    while (temp->left != NULL)
+		temp = temp->left;
+
+	    root->id = temp->id;
+	    strncpy(root->name, temp->name, MAX_NAME_LENGTH);
+	    root->right = delete_node(root->right, temp->id);
+	    }
+	    return root;
+	}
+
+        void free_tree(TreeNode* root) {
+	     if (root != NULL) {
+		 free_tree(root->left);
+		 free_tree(root->right);
+		 free(root);
+	    }
+	}
